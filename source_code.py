@@ -13,9 +13,9 @@ import ctypes.wintypes
 import urllib.request
 
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.1"
 UPDATE_CHECK_URL = "https://raw.githubusercontent.com/BrokenAnarchist/DBD-Winstreak-Tracker/main/version.txt"
-DOWNLOAD_URL = "https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases/download/v1.0.0/DBD.Winstreak.Tracker.exe"
+DOWNLOAD_URL = "https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases/download/v1.0.1/DBD.Winstreak.Tracker.exe"
 
 
 # OBS save folder (remains unchanged)
