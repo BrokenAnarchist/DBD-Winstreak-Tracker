@@ -11,11 +11,12 @@ from PIL import Image, ImageDraw, ImageFont
 
 import ctypes.wintypes
 import urllib.request
+import webbrowser
 
 
 APP_VERSION = "1.0.1"
 UPDATE_CHECK_URL = "https://raw.githubusercontent.com/BrokenAnarchist/DBD-Winstreak-Tracker/main/version.txt"
-DOWNLOAD_URL = "https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases/download/v1.0.1/DBD.Winstreak.Tracker.exe"
+DOWNLOAD_URL = "https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases"
 
 
 # OBS save folder (remains unchanged)
@@ -33,6 +34,7 @@ SAVE_DIR.mkdir(parents=True, exist_ok=True)
 CONFIG_DIR = Path(os.getenv("LOCALAPPDATA")) / "DBD Winstreaks"
 CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 PROFILES_FILE = CONFIG_DIR / "profiles.json"
+SETTINGS_FILE = CONFIG_DIR / "settings.json"
 
 DATA_FILE = "characters.json"
 IMAGE_DIR = SAVE_DIR / "images"
@@ -99,6 +101,16 @@ def generate_placeholders(relative_path):
             d.multiline_text((10, 120), f"Survivor\n{mode}", fill=(200, 200, 200), font=font, align="center")
             img.save(path)
             
+def load_settings():
+    if SETTINGS_FILE.exists():
+        with open(SETTINGS_FILE, "r") as f:
+            return json.load(f)
+    return {}
+
+def save_settings(settings):
+    with open(SETTINGS_FILE, "w") as f:
+        json.dump(settings, f, indent=4)
+            
 def check_for_updates():
     try:
         with urllib.request.urlopen(UPDATE_CHECK_URL) as response:
@@ -156,16 +168,34 @@ class WinStreakApp(QWidget):
         self.setup_palette()
         self.init_ui()
         self.installEventFilter(self)
-        QTimer.singleShot(1500, lambda: self.manual_update_check(silent=True))
+        self.settings = load_settings()
+        QTimer.singleShot(1500, self.auto_check_updates)
+        
+    def auto_check_updates(self):
+        if not self.settings.get("suppress_updates", False):
+            self.manual_update_check(silent=True)
         
     def manual_update_check(self, silent=False):
         latest = check_for_updates()
         if latest:
-            reply = QMessageBox.question(self, "Update Available",
-                f"A new version ({latest}) is available.\nWould you like to download it?",
-                QMessageBox.Yes | QMessageBox.No)
-            if reply == QMessageBox.Yes:
+            msg = QMessageBox(self)
+            msg.setWindowTitle("Update Available")
+            msg.setText(f"A new version ({latest}) is available.\nWould you like to download it?")
+            msg.setIcon(QMessageBox.Question)
+            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+
+            # Add custom checkbox
+            dont_show_checkbox = QCheckBox("Don't show this automatically again")
+            msg.setCheckBox(dont_show_checkbox)
+
+            if msg.exec_() == QMessageBox.Yes:
+                import webbrowser
                 webbrowser.open(DOWNLOAD_URL)
+            else:
+                if dont_show_checkbox.isChecked():
+                    self.settings["suppress_updates"] = True
+                    save_settings(self.settings)
+                QMessageBox.information(self, "Reminder", "You are using an old version.\nSome newer features or characters may not be available.")
         elif not silent:
             QMessageBox.information(self, "No Updates", "You are using the latest version.")
 
@@ -271,9 +301,13 @@ class WinStreakApp(QWidget):
         self.import_button.clicked.connect(self.import_profiles)
         self.export_button.clicked.connect(self.export_profiles)
         
+        self.update_button = QPushButton("🔄 Check for Updates")
+        self.update_button.clicked.connect(lambda: self.manual_update_check(silent=False))
+        
         import_export_layout = QHBoxLayout()
         import_export_layout.addWidget(self.import_button)
         import_export_layout.addWidget(self.export_button)
+        import_export_layout.addWidget(self.update_button)
         layout.addLayout(import_export_layout)
 
         frame = QFrame()
