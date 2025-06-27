@@ -156,8 +156,9 @@ class WinStreakApp(QWidget):
         self.setup_palette()
         self.init_ui()
         self.installEventFilter(self)
+        QTimer.singleShot(1500, lambda: self.manual_update_check(silent=True))
         
-    def manual_update_check(self):
+    def manual_update_check(self, silent=False):
         latest = check_for_updates()
         if latest:
             reply = QMessageBox.question(self, "Update Available",
@@ -165,7 +166,7 @@ class WinStreakApp(QWidget):
                 QMessageBox.Yes | QMessageBox.No)
             if reply == QMessageBox.Yes:
                 webbrowser.open(DOWNLOAD_URL)
-        else:
+        elif not silent:
             QMessageBox.information(self, "No Updates", "You are using the latest version.")
 
     def setup_palette(self):
