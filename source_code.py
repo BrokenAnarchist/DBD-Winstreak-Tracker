@@ -13,9 +13,9 @@ import ctypes.wintypes
 import urllib.request
 
 
-APP_VERSION = "1.0.1"
+APP_VERSION = "1.0.0"
 UPDATE_CHECK_URL = "https://raw.githubusercontent.com/BrokenAnarchist/DBD-Winstreak-Tracker/main/version.txt"
-DOWNLOAD_URL = "https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases/download/v1.0.1/DBD.Winstreak.Tracker.exe"
+DOWNLOAD_URL = "https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases/download/v1.0.0/DBD.Winstreak.Tracker.exe"
 
 
 # OBS save folder (remains unchanged)
@@ -47,7 +47,7 @@ KILLERS_IN_ORDER = [
     "The Cenobite", "The Artist", "The Onryō", "The Dredge", "The Mastermind",
     "The Knight", "The Skull Merchant", "The Singularity", "The Xenomorph",
     "The Good Guy", "The Unknown", "The Lich", "The Dark Lord", "The Houndmaster",
-    "The Ghoul", "The Animatronic"
+    "The Ghoul"
 ]
 
 def generate_placeholders(relative_path):
