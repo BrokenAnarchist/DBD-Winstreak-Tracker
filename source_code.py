@@ -47,7 +47,7 @@ KILLERS_IN_ORDER = [
     "The Cenobite", "The Artist", "The Onryō", "The Dredge", "The Mastermind",
     "The Knight", "The Skull Merchant", "The Singularity", "The Xenomorph",
     "The Good Guy", "The Unknown", "The Lich", "The Dark Lord", "The Houndmaster",
-    "The Ghoul"
+    "The Ghoul", "The Animatronic"
 ]
 
 def generate_placeholders(relative_path):
