@@ -9,14 +9,10 @@
 
 - 🎯 Track **win streaks** for each **Killer** and **Survivor**
 - 🏆 Save **Personal Bests** and **Live Session Stats**
-- 📊 Global stats and **performance comparisons**
-- 🎨 Modern GUI with **custom themes** and styles
 - 📤 **Import/Export** full profiles and stats
 - 🔁 Multi-profile support
 - 🖼️ **OBS overlay integration** (live text & images)
 - 🧩 Built-in **update system** via GitHub releases
-- ✨ Achievements, time played tracking, animated win counter
-- 📝 Character-specific notes and smart analysis
 
 ---
 
@@ -71,6 +67,8 @@ If a new version is found:
 
 - Adding Options for 2v8 (Killer and Survivor) as well as Chaos Mode
 - Adding killers as they are added into the game
+- Potential Notes for each role/killer to allow input and include things such as the build you used
+- Potential local achievements for reaching certain milestones (Unlikely)
 
 ---
 
