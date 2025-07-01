@@ -1,23 +1,21 @@
 import sys, os, json, shutil
 from pathlib import Path
 from PyQt5.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
+    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QDialog,
     QInputDialog, QComboBox, QCheckBox, QFrame, QFileDialog, QMessageBox, QStyledItemDelegate, QStyleOptionViewItem
 )
 from PyQt5.QtGui import QPixmap, QColor, QPalette, QIcon
-from PyQt5.QtCore import Qt, QEvent, QTimer
+from PyQt5.QtCore import Qt, QEvent, QTimer, QThread, pyqtSignal
 from PyQt5.QtGui import QKeyEvent
 from PIL import Image, ImageDraw, ImageFont
 
 import ctypes.wintypes
 import urllib.request
-import webbrowser
+import zipfile
 
 
-APP_VERSION = "1.0.1"
-UPDATE_CHECK_URL = "https://raw.githubusercontent.com/BrokenAnarchist/DBD-Winstreak-Tracker/main/version.txt"
-DOWNLOAD_URL = "https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases"
-
+GITHUB_REPO = "BrokenAnarchist/DBD-Winstreak-Tracker"
+CURRENT_VERSION = "1.0.0"
 
 # OBS save folder (remains unchanged)
 def get_documents_folder():
@@ -49,7 +47,7 @@ KILLERS_IN_ORDER = [
     "The Cenobite", "The Artist", "The Onryō", "The Dredge", "The Mastermind",
     "The Knight", "The Skull Merchant", "The Singularity", "The Xenomorph",
     "The Good Guy", "The Unknown", "The Lich", "The Dark Lord", "The Houndmaster",
-    "The Ghoul", "The Animatronic"
+    "The Ghoul"
 ]
 
 def generate_placeholders(relative_path):
@@ -110,18 +108,132 @@ def load_settings():
 def save_settings(settings):
     with open(SETTINGS_FILE, "w") as f:
         json.dump(settings, f, indent=4)
+        
+class UpdateDownloader(QThread):
+    progress = pyqtSignal(int)
+    finished = pyqtSignal()
+
+    def __init__(self, url, output_file):
+        super().__init__()
+        self.url = url
+        self.output_file = output_file
+
+    def run(self):
+        try:
+            with urllib.request.urlopen(self.url) as response:
+                total_size = int(response.getheader('Content-Length').strip())
+                downloaded = 0
+                block_size = 8192
+                with open(self.output_file, 'wb') as f:
+                    while True:
+                        buffer = response.read(block_size)
+                        if not buffer:
+                            break
+                        f.write(buffer)
+                        downloaded += len(buffer)
+                        percent = int((downloaded / total_size) * 100)
+                        self.progress.emit(percent)
+            self.finished.emit()
+        except Exception as e:
+            print("Update failed:", e)
             
-def check_for_updates():
+def fetch_latest_release_info():
+    """Fetch the latest release metadata from GitHub."""
     try:
-        with urllib.request.urlopen(UPDATE_CHECK_URL) as response:
-            latest_version = response.read().decode().strip()
-        if latest_version > APP_VERSION:
-            return latest_version
-        else:
-            return None
+        url = "https://api.github.com/repos/BrokenAnarchist/DBD-Winstreak-Tracker/releases/latest"
+        with urllib.request.urlopen(url) as response:
+            data = json.loads(response.read())
+            latest_version = data.get("tag_name", "")
+            changelog = data.get("body", "No changelog provided.")
+            zip_url = next((asset["browser_download_url"] for asset in data["assets"] if asset["name"].endswith(".zip")), None)
+            return latest_version, changelog, zip_url
     except Exception as e:
-        print("Could not check for updates:", e)
-        return None
+        print(f"Failed to fetch release info: {e}")
+        return None, None, None
+
+
+def extract_and_replace(zip_path):
+    """Extract downloaded update zip and overwrite necessary files."""
+    extract_dir = os.path.join(os.getcwd(), "update_temp")
+    os.makedirs(extract_dir, exist_ok=True)
+
+    try:
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_dir)
+    except Exception as e:
+        QMessageBox.critical(None, "Extraction Failed", f"Could not extract update:\n{e}")
+        return
+
+    # Move images into existing images folder (overwrite)
+    extracted_images = os.path.join(extract_dir, "images")
+    target_images = os.path.join(os.getcwd(), "images")
+    os.makedirs(target_images, exist_ok=True)
+
+    if os.path.exists(extracted_images):
+        for file in os.listdir(extracted_images):
+            src = os.path.join(extracted_images, file)
+            dst = os.path.join(target_images, file)
+            shutil.move(src, dst)  # Overwrites if file already exists
+
+    # Replace the EXE (optional — depends on packaging structure)
+    new_exe = os.path.join(extract_dir, "DBDWinstreakTracker.exe")
+    current_exe = os.path.abspath(__file__).replace(".py", ".exe")
+    try:
+        if os.path.exists(new_exe):
+            os.replace(new_exe, current_exe)
+        QMessageBox.information(None, "Update Complete", "The app has been updated.\nPlease restart it.")
+    except Exception as e:
+        QMessageBox.critical(None, "Update Error", f"Could not replace the executable:\n{e}")
+
+
+def show_update_dialog(self, new_version, changelog_text, zip_url):
+    """Display update prompt with changelog and download controls."""
+    dialog = QDialog(self)
+    dialog.setWindowTitle(f"Update Available – {new_version}")
+    layout = QVBoxLayout(dialog)
+
+    layout.addWidget(QLabel(f"A new version ({new_version}) is available.\n\nRelease Notes:\n"))
+
+    changelog_box = QTextEdit()
+    changelog_box.setPlainText(changelog_text)
+    changelog_box.setReadOnly(True)
+    layout.addWidget(changelog_box)
+
+    progress_bar = QProgressBar()
+    progress_bar.setVisible(False)
+    layout.addWidget(progress_bar)
+
+    suppress_checkbox = QCheckBox("Don't show this automatically again")
+    layout.addWidget(suppress_checkbox)
+
+    def start_download():
+        progress_bar.setVisible(True)
+        download_path = "update.zip"
+        downloader = UpdateDownloader(zip_url, download_path)
+        downloader.progress.connect(progress_bar.setValue)
+        downloader.finished.connect(lambda: extract_and_replace(download_path))
+        downloader.start()
+
+    # Button layout
+    button_layout = QHBoxLayout()
+
+    update_btn = QPushButton("Update Now")
+    update_btn.clicked.connect(start_download)
+    button_layout.addWidget(update_btn)
+
+    skip_btn = QPushButton("Skip")
+    def handle_skip():
+        if suppress_checkbox.isChecked():
+            self.settings["suppress_updates"] = True
+            save_settings(self.settings)
+        QMessageBox.information(self, "Reminder", "You are using an older version.\nSome features or characters may be unavailable.")
+        dialog.reject()
+
+    skip_btn.clicked.connect(handle_skip)
+    button_layout.addWidget(skip_btn)
+
+    layout.addLayout(button_layout)
+    dialog.exec_()
 
 def load_profiles():
     if os.path.exists(PROFILES_FILE):
@@ -166,38 +278,25 @@ class WinStreakApp(QWidget):
         self.obs_enabled = True
         self.current_img = None
         self.setup_palette()
+        self.settings = load_settings()
         self.init_ui()
         self.installEventFilter(self)
-        self.settings = load_settings()
-        QTimer.singleShot(1500, self.auto_check_updates)
+        QTimer.singleShot(1500, lambda: self.manual_update_check(silent=True))
         
     def auto_check_updates(self):
         if not self.settings.get("suppress_updates", False):
             self.manual_update_check(silent=True)
         
     def manual_update_check(self, silent=False):
-        latest = check_for_updates()
-        if latest:
-            msg = QMessageBox(self)
-            msg.setWindowTitle("Update Available")
-            msg.setText(f"A new version ({latest}) is available.\nWould you like to download it?")
-            msg.setIcon(QMessageBox.Question)
-            msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-
-            # Add custom checkbox
-            dont_show_checkbox = QCheckBox("Don't show this automatically again")
-            msg.setCheckBox(dont_show_checkbox)
-
-            if msg.exec_() == QMessageBox.Yes:
-                import webbrowser
-                webbrowser.open(DOWNLOAD_URL)
-            else:
-                if dont_show_checkbox.isChecked():
-                    self.settings["suppress_updates"] = True
-                    save_settings(self.settings)
-                QMessageBox.information(self, "Reminder", "You are using an old version.\nSome newer features or characters may not be available.")
+        latest_version, changelog, zip_url = fetch_latest_release_info()
+        if latest_version and latest_version != CURRENT_VERSION:
+            show_update_dialog(self, latest_version, changelog, zip_url)
         elif not silent:
             QMessageBox.information(self, "No Updates", "You are using the latest version.")
+            
+    def toggle_auto_update(self, state):
+        self.settings["suppress_updates"] = (state == Qt.Unchecked)
+        save_settings(self.settings)
 
     def setup_palette(self):
         palette = QPalette()
@@ -220,13 +319,31 @@ class WinStreakApp(QWidget):
             QPushButton:hover {
                 background-color: #29293d;
             }
-            QComboBox, QCheckBox, QLabel {
-                margin: 4px;
-                border: none;
-                outline: none;
+            QComboBox {
+                background-color: rgba(30, 30, 40, 0.9);
+                border: 1px solid #5a5a7a;
+                border-radius: 8px;
+                padding: 6px 30px 6px 10px;
+                color: #E0FFFF;
+                font-weight: 500;
+                font-size: 13px;
             }
-            QComboBox QAbstractItemView {
-                text-align: center;
+            QComboBox:hover {
+                background-color: rgba(50, 50, 70, 1.0);
+                border: 1px solid #7c7c9c;
+            }
+            QComboBox::drop-down {
+                subcontrol-origin: padding;
+                subcontrol-position: top right;
+                width: 24px;
+                border-left: 1px solid #5a5a7a;
+                background-color: transparent;
+            }
+            QComboBox::down-arrow {
+                image: none;
+                width: 14px;
+                height: 14px;
+                margin-right: 6px;
             }
             QFrame {
                 border: 1px solid #444;
@@ -270,7 +387,7 @@ class WinStreakApp(QWidget):
         name_layout.addWidget(self.lock_checkbox)
 
         self.image_label = QLabel()
-        self.image_label.setFixedSize(250, 250)
+        self.image_label.setFixedSize(200, 200)
         self.image_label.setAlignment(Qt.AlignCenter)
         image_wrapper = QHBoxLayout()
         image_wrapper.addStretch()
@@ -302,8 +419,12 @@ class WinStreakApp(QWidget):
         self.export_button.clicked.connect(self.export_profiles)
         
         self.update_button = QPushButton("🔄 Check for Updates")
-        self.update_button.clicked.connect(lambda: self.manual_update_check(silent=False))
+        self.update_button.clicked.connect(self.manual_update_check)
         
+        self.auto_update_checkbox = QCheckBox("Check for updates on startup")
+        self.auto_update_checkbox.setChecked(not self.settings.get("suppress_updates", False))
+        self.auto_update_checkbox.stateChanged.connect(self.toggle_auto_update)
+                
         import_export_layout = QHBoxLayout()
         import_export_layout.addWidget(self.import_button)
         import_export_layout.addWidget(self.export_button)
@@ -334,6 +455,8 @@ class WinStreakApp(QWidget):
         frame_layout.addWidget(self.reset_button)
         frame_layout.addWidget(self.obs_toggle)
         frame_layout.addWidget(self.obs_status)
+        frame_layout.addWidget(self.update_button)
+        layout.addWidget(self.auto_update_checkbox)
         frame.setLayout(frame_layout)
 
         layout.addWidget(frame)
@@ -481,7 +604,7 @@ class WinStreakApp(QWidget):
         default_img = IMAGE_DIR / image_name
         self.current_img = char.get("image_path") or (str(default_img) if default_img.exists() else None)
         if self.current_img:
-            self.image_label.setPixmap(QPixmap(self.current_img).scaled(250, 250, Qt.KeepAspectRatio))
+            self.image_label.setPixmap(QPixmap(self.current_img).scaled(200, 200, Qt.KeepAspectRatio))
         else:
             self.image_label.clear()
         if self.obs_enabled and self.lock_active:
