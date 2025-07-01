@@ -27,7 +27,7 @@
 
 ## 💡 How to Use
 
-1. Create a "New Profile" or select one you have already made from the dropdown
+1. Create a "New Profile" or select one you have already made from the dropdown **(A profile has to be selected otherwise nothing else will work)**
 2. Select a **Killer** or **Survivor** from the dropdown
 3. Tick `Lock Active` to prevent accidental switching mid-streak
 4. Enable OBS output to sync **live text/image updates**
