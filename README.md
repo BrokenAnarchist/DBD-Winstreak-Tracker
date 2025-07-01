@@ -19,7 +19,7 @@
 ## 🚀 Installation
 
 1. Download the latest `.zip` from the [Releases Page](https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases)
-2. Extract the Zip file into your main documents directory inside a new folder called "Winstreaks" (example: `D:\Documents\Winstreaks`) this is so everything will run properly and update accordingly when there are new updates available. If you wish to have the main exe file located somewhere else on your PC, you will need to create a desktop shortcut (for the time being, this will change in the future).
+2. Extract the `images` folder to your main documents directory inside a new folder called "Winstreaks" (example: `D:\Documents\Winstreaks`), this will allow you to have the exe program anywhere on your PC, while making sure the appropriate images will appear.
 3. Run the executable:  
    `DBD Winstreaks.exe`
 
