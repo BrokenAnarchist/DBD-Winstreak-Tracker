@@ -1,0 +1,91 @@
+# 🪓 DBD Winstreak Tracker
+
+> A powerful and modern win streak tracker for **Dead by Daylight** players – designed with streamers, competitors, and stat lovers in mind.  
+> Includes real-time OBS output, automatic updates, achievements, session tracking, global stats, and more.
+
+---
+
+## 🎮 Features
+
+- 🎯 Track **win streaks** for each **Killer** and **Survivor**
+- 🏆 Save **Personal Bests** and **Live Session Stats**
+- 📊 Global stats and **performance comparisons**
+- 🎨 Modern GUI with **custom themes** and styles
+- 📤 **Import/Export** full profiles and stats
+- 🔁 Multi-profile support
+- 🖼️ **OBS overlay integration** (live text & images)
+- 🧩 Built-in **update system** via GitHub releases
+- ✨ Achievements, time played tracking, animated win counter
+- 📝 Character-specific notes and smart analysis
+
+---
+
+## 🚀 Installation
+
+1. Download the latest `.zip` from the [Releases Page](https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases)
+2. Extract it to a folder (example: `D:\Documents\Winstreaks`)
+3. Run the executable:  
+   `DBD Winstreaks.exe`
+
+> ⚠️ Do **not** move the `images/` folder or the app may not load character visuals.
+
+## 💡 How to Use
+
+1. Create a "New Profile" or select one you have already made from the dropdown
+2. Select a **Killer** or **Survivor** from the dropdown
+3. Tick `Lock Active` to prevent accidental switching mid-streak
+4. Enable OBS output to sync **live text/image updates**
+5. Press `+ Add Win` to increase your current streak
+6. When you have finished the streak (either died or did not meet your win condition) click "Finish Streak" and your stats will be saved as your Personal Best
+7. Select "Reset Streak" to make another attempt (This will **NOT** overwrite your current Personal Best unless you get a higher score
+
+---
+
+## 🧩 Advanced Features
+
+- 📦 Auto-update from GitHub (with changelog popups)
+- ⚙️ Silent update checks + "Don't show again" options
+
+---
+
+## 🧠 Smart/Analytical Tools
+
+- Automatically records **longest streaks**
+- Real-time **OBS overlays** with customized PNG + text output
+
+---
+
+## 📥 Updating
+
+The app automatically checks for updates.  
+You can also manually check by clicking **"Check for Updates"** inside the app.
+
+If a new version is found:
+- A changelog popup will appear
+- The update will download and extract automatically
+- New images (e.g. new killers) will be added into the `images/` folder
+
+---
+
+## 🔮 Roadmap
+
+- Adding Options for 2v8 (Killer and Survivor) as well as Chaos Mode
+- Adding killers as they are added into the game
+
+---
+
+## 🙌 Credits
+
+Developed by **BrokenAnarchist**  
+Licensed under the [MIT License](LICENSE)
+
+> Not affiliated with Behaviour Interactive.
+
+---
+
+## 🔗 Useful Links
+
+- 📦 [Download Latest Release](https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases/latest)
+- 🐞 Report Bugs via [GitHub Issues](https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/issues)
+
+---
