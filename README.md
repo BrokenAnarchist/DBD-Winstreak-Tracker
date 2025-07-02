@@ -38,6 +38,12 @@
 
 ---
 
+## 💡 OBS Integration
+
+### The OBS Files such as your personal best, current streak and character images for your overlays are all located in your Documents Folder, inside of a subfolder called "Winstreaks" (hopefully)
+
+---
+
 ## 🧩 Advanced Features
 
 - 📦 Auto-update from GitHub (with changelog popups)
