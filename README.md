@@ -18,10 +18,11 @@
 
 ## 🚀 Installation
 
-1. Download the latest `.zip` from the [Releases Page](https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases)
-2. Extract the `images` folder to your main documents directory inside a new folder called "Winstreaks" (example: `D:\Documents\Winstreaks`), this will allow you to have the exe program anywhere on your PC, while making sure the appropriate images will appear.
-3. Run the executable:  
-   `DBD Winstreaks.exe`
+### 🆕 New Users:
+1. Download and run `WinstreakInstaller.exe` from the latest version in the [Releases Page](https://github.com/BrokenAnarchist/DBD-Winstreak-Tracker/releases)
+2. Run the executable:  
+   `Winstreak Tracker.exe`
+   
 
 > ⚠️ Do **not** move the `images/` folder or the app may not load character visuals.
 
