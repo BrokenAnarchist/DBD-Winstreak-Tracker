@@ -76,6 +76,7 @@ If a new version is found:
 - Adding killers as they are added into the game
 - Adding a feature to choose custom images for the characters rather the default placeholders that are currently there
 - Potential Notes for each role/killer to allow input and include things such as the build you used
+- Add the option to have an animation appear as an overlay for when an action happens, such as adding a win to the counter, losing or setting a new personal best (will be configuarble in a settings menu)
 - Potential local achievements for reaching certain milestones (Unlikely)
 
 ---
