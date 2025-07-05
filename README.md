@@ -47,7 +47,6 @@
 ## 🧩 Advanced Features
 
 - 📦 Auto-update from GitHub (with changelog popups)
-- ⚙️ Silent update checks + "Don't show again" options
 
 ---
 
