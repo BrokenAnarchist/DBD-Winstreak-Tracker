@@ -75,6 +75,7 @@ If a new version is found:
 ## 🔮 Roadmap
 
 - Adding characters as they are added into the game
+- Creating a Preview/Output for the Regular Mode (similar to the one done for customs)
 
 ---
 
