@@ -38,6 +38,14 @@
 
 ---
 
+## 🚀 Modes
+- The "Regular Mode" is used specifically for if you are doing streaks for individual characters, such as a Blight Streak. Whereas the Custom Modes are more overall trackers, such as Escape Streaks.
+- The "Custom Streaks" have the ability to set goals, for example if you are doing an All Killer Streak, you have the ability to specify the maximum that the counter can go up to.
+- The "Custom Streaks" allow you to customise and specify multiple different outputs and styles for your files.
+- The "Custom Streaks" also generate an image that updates in real-time with the application that you can customise which can be used as an overlay on OBS if you do not have a custom made one.
+
+---
+
 ## 🧩 Advanced Features
 
 - 📦 Auto-update from GitHub (with changelog popups)
