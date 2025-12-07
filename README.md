@@ -1,7 +1,7 @@
 # 🪓 DBD Winstreak Tracker
 
 > A powerful and modern win streak tracker for **Dead by Daylight** players – designed with streamers, competitors, and stat lovers in mind.  
-> Includes real-time OBS output, automatic updates, achievements, session tracking, global stats, and more.
+> Includes real-time OBS output, automatic updates.
 
 ---
 
@@ -9,10 +9,11 @@
 
 - 🎯 Track **win streaks** for each **Killer** and **Survivor**
 - 🏆 Save **Personal Bests** and **Live Session Stats**
-- 📤 **Import/Export** full profiles and stats
-- 🔁 Multi-profile support
+- 🖼 Live leaderboard option for selectable streaks
+- 🖼 Popout Window with live preview (additional to the file outputs) which can be used as a Window Capture option through OBS
 - 🖼️ **OBS overlay integration** (live text & images)
 - 🧩 Built-in **update system** via GitHub releases
+- 🖼 Different custom streak options; Goal (for things such as the All Perk Streak), Counter (for things such as the CopyCat streak) or Request (for things such as build/character requests for Streams)
 
 ---
 
@@ -27,21 +28,20 @@
 > ⚠️ Do **not** move the `images/` folder or the app may not load character visuals.
 
 ## 💡 How to Use
-
-1. Create a "New Profile" or select one you have already made from the dropdown **(A profile has to be selected otherwise nothing else will work)**
-2. Select a **Killer** or **Survivor** from the dropdown
+ 
+1. Select a **Killer** or **Survivor** from the dropdown
 3. Tick `Lock Active` to prevent accidental switching mid-streak
 4. Enable OBS output to sync **live text/image updates**
 5. Press `+ Add Win` to increase your current streak
 6. When you have finished the streak (either died or did not meet your win condition) click "Finish Streak" and your stats will be saved as your Personal Best
 7. Select "Reset Streak" to make another attempt (This will **NOT** overwrite your current Personal Best unless you get a higher score
+8. Setting the Leaderboard can be found in the "Settings" menu where you can select from all the available streak options to include
 
 ---
 
 ## 🚀 Modes
-- The "Regular Mode" is used specifically for if you are doing streaks for individual characters, such as a Blight Streak. Whereas the Custom Modes are more overall trackers, such as Escape Streaks.
+- The "Regular Mode" is used specifically for if you are doing streaks for individual characters, such as a Blight Streak or Survivor Escape Streaks. Whereas the Custom Modes are more overall trackers, such as CopyCat Streaks.
 - The "Custom Streaks" have the ability to set goals, for example if you are doing an All Killer Streak, you have the ability to specify the maximum that the counter can go up to.
-- The "Custom Streaks" allow you to customise and specify multiple different outputs and styles for your files.
 - The "Custom Streaks" also generate an image that updates in real-time with the application that you can customise which can be used as an overlay on OBS if you do not have a custom made one.
 
 ---
@@ -56,7 +56,7 @@
 ## 🧠 Smart/Analytical Tools
 
 - Automatically records **longest streaks**
-- Real-time **OBS overlays** with customized PNG + text output
+- Real-time **OBS overlays** with customized PNG + text output + Window Capture
 
 ---
 
@@ -75,7 +75,6 @@ If a new version is found:
 ## 🔮 Roadmap
 
 - Adding characters as they are added into the game
-- Creating a Preview/Output for the Regular Mode (similar to the one done for customs)
 
 ---
 
