@@ -39,15 +39,24 @@
 Note: If you wish to use the Text File version rather than Window Capture, Enable "Write OBS Text/Images" located on the right hand side of the Main Tools Window.
 
 
-## 💡 How to Setup OBS Overlay
+## 💡 How to Setup OBS Overlay **(Window Capture Method)**
 
-1. Inside Winstreak App, enable "Overlay Active"
-2. Toggle the "Lock Overlay Position" to move the overlay to your desired screen and/or toggle the "Always on Top" to have the window active but underneath other applications
-3. In OBS add a new source type "Window Capture"
-4. Set the "Window" as "[Winstreak Tracker.exe]: Winstreak Overlay" **DO NOT** confuse with "[Winstreak Tracker.exe]: Winstreak Overlay Tools"
-5. Set the "Capture Method" as **"Windows 10 (1903 and up)**
-6. Set "Window Match Priority" as "**Window title must match**"
-7. Disable "Capture Audio (Beta)", "Capture Cursor", "Client Area" and "Force SDR" if any are selected by default
+1. Inside Winstreak App, enable "Write OBS Text/Images"
+2. Find the folder where the text and image files are being outputted to, there is a label located just below the Toggle for the "Write OBS Text/Images" that says "OBS output: ON/OFF..."
+3. In OBS add a new source type "Text (GDI+)" or "Image"
+4. Enable "Read from File"
+5. Go to the folder that the files are exporting to and select which ones you wish to use (Only the main files, not from the "Images" folder)
+6. Select whichever of the files you want to have as an overlay for your OBS (You will need to make multiple different sources for each file you add)
+
+   ### 💡 OBS File Output Formatting**
+   Located inside the "Settings" window in the main app **(NOT THE LAUNCHER, AFTER YOU CLICK "Winstreak Tracker")** and then the "Text Formatting Window"
+
+   1. The "Current Streak" and "Personal Best" sections don't really need any adjustments as they are moreso static data
+   2. The "Single-Line Output" is the section you would change if you wish to add custom text. **MAKE SURE TO HAVE THE VALUES OF {name}, {number} and {best}** If you don't, the data will not be written to the Output file correctly
+   3. Click "Save" and it will appear in the "Formatted.txt" file that was located in the Output folder
+
+
+## 💡 How to Setup OBS Overlay **(Text Files/Image Method)**
 
 
 ---
