@@ -13,7 +13,7 @@
 - 🖼 Popout Window with live preview (additional to the file outputs) which can be used as a Window Capture option through OBS
 - 🖼️ **OBS overlay integration** (live text & images)
 - 🧩 Built-in **update system** via GitHub releases
-- 🖼 Different custom streak options; Goal (for things such as the All Perk Streak), Counter (for things such as the CopyCat streak) or Request (for things such as build/character requests for Streams)
+- 🖼 Different custom streak options; Goal (for things such as the All Perk Streak), Counter (for things such as the CopyCat streak), Request (for things such as build/character requests for Streams) or Multi-Goal (for things such as All Region Streaks)
 
 ---
 
@@ -31,11 +31,24 @@
  
 1. Select a **Killer** or **Survivor** from the dropdown
 3. Tick `Lock Active` to prevent accidental switching mid-streak
-4. Enable OBS output to sync **live text/image updates**
-5. Press `+ Add Win` to increase your current streak
-6. When you have finished the streak (either died or did not meet your win condition) click "Finish Streak" and your stats will be saved as your Personal Best
-7. Select "Reset Streak" to make another attempt (This will **NOT** overwrite your current Personal Best unless you get a higher score
-8. Setting the Leaderboard can be found in the "Settings" menu where you can select from all the available streak options to include
+4. Press `+ Add Win` to increase your current streak
+5. When you have finished the streak (either died or did not meet your win condition) click "Finish Streak" and your stats will be saved as your Personal Best
+6. Select "Reset Streak" to make another attempt (This will **NOT** overwrite your current Personal Best unless you get a higher score
+7. Setting the Leaderboard can be found in the "Settings" menu where you can select from all the available streak options to include
+
+Note: If you wish to use the Text File version rather than Window Capture, Enable "Write OBS Text/Images" located on the right hand side of the Main Tools Window.
+
+
+## 💡 How to Setup OBS Overlay
+
+1. Inside Winstreak App, enable "Overlay Active"
+2. Toggle the "Lock Overlay Position" to move the overlay to your desired screen and/or toggle the "Always on Top" to have the window active but underneath other applications
+3. In OBS add a new source type "Window Capture"
+4. Set the "Window" as "[Winstreak Tracker.exe]: Winstreak Overlay" **DO NOT** confuse with "[Winstreak Tracker.exe]: Winstreak Overlay Tools"
+5. Set the "Capture Method" as **"Windows 10 (1903 and up)**
+6. Set "Window Match Priority" as "**Window title must match**"
+7. Disable "Capture Audio (Beta)", "Capture Cursor", "Client Area" and "Force SDR" if any are selected by default
+
 
 ---
 
