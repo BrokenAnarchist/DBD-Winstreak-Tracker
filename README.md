@@ -66,6 +66,8 @@ Note: If you wish to use the Text File version rather than Window Capture, Enabl
 - The "Custom Streaks" have the ability to set goals, for example if you are doing an All Killer Streak, you have the ability to specify the maximum that the counter can go up to.
 - The "Custom Streaks" also generate an image that updates in real-time with the application that you can customise which can be used as an overlay on OBS if you do not have a custom made one.
 
+- Under the Streak Selection, there is a "Custom Label" section, you can change the label so that it can say different things, for example you could do your team name escape streak, eg. "Eternal Escape Streak" or even change the killer streak from "The Blight" to "Blight" 
+
 ---
 
 ## 🧩 Advanced Features
